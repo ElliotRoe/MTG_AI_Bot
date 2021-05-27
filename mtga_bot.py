@@ -17,16 +17,14 @@ in for reference.
 
 """
 
-from PIL import ImageGrab, ImageOps, Image
-from numpy import *
-import pyautogui
-import PIL
-import imagehash
-import time
-import win32api, win32con
-from random import randrange
-from datetime import datetime
 import logging
+import time
+from datetime import datetime
+
+import imagehash
+import win32api
+import win32con
+from PIL import ImageGrab, Image
 
 # ----- SETTINGS -----
 # These settings can be used to fine tune how the bot acts. It may be the case that the bot is clicking too fast or slow
@@ -221,7 +219,7 @@ def scan_screen():
     print("smiley_face_value: {}".format(smiley_face_value))
 """
     # change file path to your machine or the current virtual machine
-    hash0 = imagehash.average_hash(Image.open(r"E:/Python/MTG_AI_Bot/MTGA Icon Snips/play_button.PNG"))
+    hash0 = imagehash.average_hash(Image.open("MTGA Icon Snips/play_button.PNG"))
     hash1 = imagehash.average_hash(Image.open("play_button.PNG"))
     cutoff = 18
     print(hash0 - hash1)

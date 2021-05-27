@@ -104,7 +104,6 @@ class Zone:
     # Maintain co-ordinates of zones/boxes that will be snipped for image match
 
     but_play = (1620, 980, 1850, 1035)         # On opening screen at game launch [ FINISHED ]
-    but_play_sidebar = (1900, 670, 1905, 675)   # After you press play to choose deck
     friends_icon = (30, 1005, 35, 1015)         # In match, Match Victory, or Match Defeat
     match_result = (1835, 1020, 1868, 1038)     # Match is over and awaiting click
     undo_but = (1860, 830, 1870, 840)           # Undo button, appears when not sufficient mana to cast card
@@ -185,12 +184,11 @@ def get_screen_snip(box, zone_name):
 def scan_screen():
 
     get_screen_snip(Zone.but_play, "play_button")
+
     """
-    print("but_play_value: {}".format(but_play_value))
 
     
-    but_play_sidebar_value = get_screen_snip(Zone.but_play_sidebar)
-    print("but_play_sidebar_value: {}".format(but_play_sidebar_value))
+    
 
     friends_icon_value = get_screen_snip(Zone.friends_icon)
     print("friends_icon_value: {}".format(friends_icon_value))
@@ -222,7 +220,7 @@ def scan_screen():
     smiley_face_value = get_screen_snip(Zone.smiley_face)
     print("smiley_face_value: {}".format(smiley_face_value))
 """
-    #
+    # change file path to your machine or the current virtual machine
     hash0 = imagehash.average_hash(Image.open(r"E:/Python/MTG_AI_Bot/MTGA Icon Snips/play_button.PNG"))
     hash1 = imagehash.average_hash(Image.open("play_button.PNG"))
     cutoff = 18

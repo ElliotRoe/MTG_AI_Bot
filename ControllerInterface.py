@@ -9,8 +9,12 @@ class ControllerKernel:
 
     pass
 
-    def get_game_state(self) -> (str, str):
-        """ Returns a tuple representing the game's state """
+    def get_game_state(self):
+        """ 
+        Returns a tuple representing the game's state
+        Returns:
+            Ugly dump of tuple which is basically just the MTGA log
+        """
 
     pass
 
@@ -29,7 +33,7 @@ class ControllerKernel:
 
     pass
 
-    def block(self, attacker_id: int, blocker_id: int) -> bool:
+    def block(self, attacker_id: int, blocker_id: int) -> None:
         """
         Makes the blocker card block the attacker
 
@@ -46,7 +50,7 @@ class ControllerKernel:
         """
         pass
 
-    def cast(self, card_id: int) -> bool:
+    def cast(self, card_id: int) -> None:
         """
         Makes the blocker card block the attacker
 
@@ -62,7 +66,7 @@ class ControllerKernel:
         """
         pass
 
-    def activate_ability(self, card_id: int, ability_id: int):
+    def activate_ability(self, card_id: int, ability_id: int) -> None:
         """
         Activates a specified card's specified ability
 
@@ -75,13 +79,9 @@ class ControllerKernel:
             Specified card's ability is used
         """
         pass
-
-    def is_busy(self):
-        """
-        Checks if the controller is waiting on opponent or busy doing a task
-        """
-        pass
-
+    
+    
+    """ TODO: add pass/resolve method (do nothing) """
 
 class Controller(ControllerKernel):
     """
@@ -89,12 +89,21 @@ class Controller(ControllerKernel):
     Defines secondary methods for the Controller type.
     """
 
+    def get_game_state_pretty(self):
+    """ 
+    Returns a tuple representing the game's state
+    Returns:
+        (permanents and attributes, player's hand, opponent's hand, life totals, spells on the stack, cards in other zones)
+    """
+
+    pass
+    
     def all_attack(self) -> None:
         """ Attacks with all cards that can attack """
         pass
 
     def all_block(self) -> None:
-        """ Blocks with all creatures that can block. There is no particular order """
+        """ Blocks with all creatures that can block. There is no particular order. Note: kinda complicated to implement """
         pass
 
     def game_over(self) -> bool:

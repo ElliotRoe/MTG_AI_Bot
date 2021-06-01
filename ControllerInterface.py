@@ -1,4 +1,9 @@
-class ControllerInterface:
+class ControllerKernel:
+    """
+    Informal Interface
+    Defines kernel methods for the Controller type.
+    """
+
     def start_game(self) -> None:
         """ Starts a new MTG game from the "home screen"  """
 
@@ -9,12 +14,12 @@ class ControllerInterface:
 
     pass
 
-    def attack(self, card: int = -1) -> None:
+    def attack(self, card_id: int = -1) -> None:
         """
         Makes a specified card attack
 
         Parameters:
-            card (int): the id of the card that should attack. If card = -1 then all should attack
+            card_id (int): the id of the card that should attack. If card = -1 then all should attack
         Requires:
             game_wave == ('player_attacking')
             number of cards that are able to attack > 0
@@ -24,13 +29,13 @@ class ControllerInterface:
 
     pass
 
-    def block(self, attacker: int, blocker: int) -> bool:
+    def block(self, attacker_id: int, blocker_id: int) -> bool:
         """
         Makes the blocker card block the attacker
 
         Parameters:
-            attacker (int): The id of an opponents card that is attacking
-            blocker (int): The id of a player's card that should block the specified attacking card
+            attacker_id (int): The id of an opponents card that is attacking
+            blocker_id (int): The id of a player's card that should block the specified attacking card
         Requires:
             game_wave == ('opponent_attacking')
             number of cards that are able to block > 0
@@ -41,12 +46,12 @@ class ControllerInterface:
         """
         pass
 
-    def cast(self, card: int) -> bool:
+    def cast(self, card_id: int) -> bool:
         """
         Makes the blocker card block the attacker
 
         Parameters:
-            card (int): The id of a card in the player's hand
+            card_id (int): The id of a card in the player's hand
         Requires:
             game_wave == ('player_main') or (card is an instant and controller not busy)
             mana needed to cast the card is present
@@ -57,8 +62,40 @@ class ControllerInterface:
         """
         pass
 
+    def activate_ability(self, card_id: int, ability_id: int):
+        """
+        Activates a specified card's specified ability
+
+        Parameters:
+            card_id (int): The id of a card in the player's hand
+            ability_id (int): The id of an ability that is to be activated
+        Requires:
+            All prerequisites for the ability are filled
+        Ensures:
+            Specified card's ability is used
+        """
+        pass
+
     def is_busy(self):
         """
         Checks if the controller is waiting on opponent or busy doing a task
         """
         pass
+
+
+class Controller(ControllerKernel):
+    """
+    Informal Interface
+    Defines secondary methods for the Controller type.
+    """
+
+    def all_attack(self) -> None:
+        """ Attacks with all cards that can attack """
+        pass
+
+    def all_block(self) -> None:
+        """ Blocks with all creatures that can block. There is no particular order """
+        pass
+
+    def game_over(self) -> bool:
+        """ Checks if the game is over and returns true if it is """

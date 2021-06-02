@@ -92,7 +92,7 @@ class Controller(ControllerKernel):
     def get_game_state_pretty(self):
         """
         Returns a tuple representing the game's state Returns: (permanents and attributes, player's hand, opponent's
-        hand, life totals, spells on the stack, cards in other zones)
+        hand, life totals, spells on the stack, cards in other zones, turn phase, turn)
         """
 
         pass

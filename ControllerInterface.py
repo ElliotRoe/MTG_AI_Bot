@@ -57,8 +57,7 @@ class ControllerKernel:
         Parameters:
             card_id (int): The id of a card in the player's hand
         Requires:
-            game_wave == ('player_main') or (card is an instant and controller not busy)
-            mana needed to cast the card is present
+            The requirements to cast the card are met
         Ensures:
             Specified card is cast
         Returns:
@@ -79,9 +78,10 @@ class ControllerKernel:
             Specified card's ability is used
         """
         pass
-    
-    
-    """ TODO: add pass/resolve method (do nothing) """
+
+    def resolve(self):
+        """ Passes and or resolves a decision in the game. Basically a "do nothing" method """
+
 
 class Controller(ControllerKernel):
     """
@@ -90,20 +90,20 @@ class Controller(ControllerKernel):
     """
 
     def get_game_state_pretty(self):
-    """ 
-    Returns a tuple representing the game's state
-    Returns:
-        (permanents and attributes, player's hand, opponent's hand, life totals, spells on the stack, cards in other zones)
-    """
+        """
+        Returns a tuple representing the game's state Returns: (permanents and attributes, player's hand, opponent's
+        hand, life totals, spells on the stack, cards in other zones)
+        """
 
-    pass
-    
+        pass
+
     def all_attack(self) -> None:
         """ Attacks with all cards that can attack """
         pass
 
     def all_block(self) -> None:
-        """ Blocks with all creatures that can block. There is no particular order. Note: kinda complicated to implement """
+        """ Blocks with all creatures that can block. There is no particular order. Note: kinda complicated to
+        implement """
         pass
 
     def game_over(self) -> bool:

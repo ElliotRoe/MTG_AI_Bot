@@ -1,5 +1,5 @@
-from MTGAIInterface import MTGAI
-from MTGGame import MTGGame
+from AIInterface import MTGAI
+from Game import MTGGame
 
 class DummyMTGAI(MTGAI):
     def generate_move(self, game_state: MTGGame.GameState):

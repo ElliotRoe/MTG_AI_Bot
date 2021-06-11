@@ -2,7 +2,7 @@ import threading
 import time
 
 
-class MTGALogReader:
+class LogReader:
     LOG_UPDATE_SPEED = 0.1
 
     def __init__(self, patterns, user="Elliot Roe", player_id="LE3ZCMCJZBHUDGATTY2EJLUEIM"):
@@ -13,12 +13,10 @@ class MTGALogReader:
         self.__has_new_line = {}
         for pattern in patterns:
             self.__lines_containing_pattern[pattern] = ""
-            self.__has_new_line[pattern] = True
+            self.__has_new_line[pattern] = False
 
         self.__log_monitor_thread = None
         self.__stop_monitor = False
-
-
 
     def __follow(self, the_file):
         the_file.seek(0, 2)

@@ -1,5 +1,5 @@
 from ControllerInterface import Controller
-from MTGAController import MTGAController
+from MTGAController import Controller
 
 
 class MTGGame:
@@ -17,7 +17,7 @@ class MTGGame:
             self.attributes_array = attributes_array
             self.permanent_id_array = permanent_id_array
 
-    def __init__(self, controller: Controller = MTGAController()):
+    def __init__(self, controller: Controller = Controller()):
         controller.start_game()
         while not controller.game_over():
             current_state = controller.get_game_state()

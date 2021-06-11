@@ -3,19 +3,22 @@ import time
 
 
 class MTGALogReader:
-
     LOG_UPDATE_SPEED = 0.1
 
-    def __init__(self, patterns, user = "Elliot Roe", player_id = "LE3ZCMCJZBHUDGATTY2EJLUEIM"):
+    def __init__(self, patterns, user="Elliot Roe", player_id="LE3ZCMCJZBHUDGATTY2EJLUEIM"):
         self.__user = user
         self.__player = player_id
         self.__log_path = "/Users/" + self.__user + "/AppData/LocalLow/Wizards Of The Coast/MTGA/Player.log"
         self.__lines_containing_pattern = {}
+        self.__has_new_line = {}
         for pattern in patterns:
             self.__lines_containing_pattern[pattern] = ""
+            self.__has_new_line[pattern] = True
 
         self.__log_monitor_thread = None
         self.__stop_monitor = False
+
+
 
     def __follow(self, the_file):
         the_file.seek(0, 2)
@@ -35,6 +38,7 @@ class MTGALogReader:
                 return
             for pattern in self.__lines_containing_pattern:
                 if pattern in line:
+                    self.__has_new_line[pattern] = True
                     self.__lines_containing_pattern[pattern] = line
 
     def start_log_monitor(self):
@@ -50,5 +54,8 @@ class MTGALogReader:
         return self.__log_monitor_thread is not None and self.__log_monitor_thread.is_alive()
 
     def get_latest_line_containing_pattern(self, pattern):
+        self.__has_new_line[pattern] = False
         return self.__lines_containing_pattern[pattern]
 
+    def has_new_line(self, pattern):
+        return self.__has_new_line[pattern]

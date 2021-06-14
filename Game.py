@@ -1,4 +1,4 @@
-from ControllerInterface import Controller
+from ControllerInterface import ControllerSecondary
 from MTGAController import Controller
 
 

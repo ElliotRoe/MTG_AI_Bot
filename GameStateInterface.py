@@ -12,7 +12,7 @@ class GameStateKernel:
         pass
 
 
-class GameState:
+class GameStateSecondary:
     """
     Informal Interface
     Defines secondary methods for the GameState type
@@ -30,3 +30,48 @@ class GameState:
         Returns:
             A properly formatted dictionary with all the information necessary needed for a zone
         """
+
+    def get_actions(self) -> dict[str, str]:
+        """
+        Gets all possible actions that are currently available
+
+        Returns:
+            A properly formatted dictionary with all the information necessary for actions
+        """
+        pass
+
+    def get_turn_info(self) -> dict[str, str]:
+        """
+        Gets all possible actions that are currently available
+
+        Returns:
+            A properly formatted dictionary with all the information necessary for actions
+        """
+        pass
+
+    def get_players(self) -> dict[str, str]:
+        """
+        Get player info
+
+        Returns:
+            A properly formatted dictionary with all the information necessary for the players
+        """
+        pass
+
+    def get_annotations(self) -> dict[str, str]:
+        """
+        Get annotation info
+
+        Returns:
+            A properly formatted dictionary with all the information necessary for annotations on permanents
+        """
+        pass
+
+    def get_game_info(self) -> dict[str, str]:
+        """
+        Gets game info
+
+        Returns:
+            A properly formatted dictionary with all the information necessary for information on the game
+        """
+        pass

@@ -83,7 +83,7 @@ class ControllerKernel:
         """ Passes and or resolves a decision in the game. Basically a "do nothing" method """
 
 
-class Controller(ControllerKernel):
+class ControllerSecondary(ControllerKernel):
     """
     Informal Interface
     Defines secondary methods for the Controller type.

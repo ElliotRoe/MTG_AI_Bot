@@ -1,4 +1,4 @@
-class MTGAI:
+class AIKernel:
     """
     Informal Interface
     Defines kernel methods for the AI type.

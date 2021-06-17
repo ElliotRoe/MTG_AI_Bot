@@ -31,6 +31,13 @@ class GameStateSecondary:
             A properly formatted dictionary with all the information necessary needed for a zone
         """
 
+    def get_actions(self):
+        """
+        Gets a list of possible actions
+
+        """
+        pass
+
     def get_actions(self) -> dict[str, str]:
         """
         Gets all possible actions that are currently available

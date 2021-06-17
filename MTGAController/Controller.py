@@ -11,7 +11,7 @@ class Controller(ControllerSecondary):
         self.screen_bounds = screen_bounds
         self.patterns = {'game_state': '"type": "GREMessageType_GameStateMessage"', 'hover_id': 'objectId'}
         self.log_reader = LogReader(self.patterns.values())
-        self.mouse_controller = mouse.Controller()
+        self.mouse_controller = mouse.ControllerSecondary()
         self.cast_speed = 0.001
         self.cast_card_dist = 10
 

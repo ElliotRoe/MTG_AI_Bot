@@ -1,10 +1,13 @@
+from GameStateInterface import GameStateSecondary
+
+
 class AIKernel:
     """
     Informal Interface
     Defines kernel methods for the AI type.
     """
 
-    def generate_move(self, game_state: (str, ...)) -> str:
+    def generate_move(self, game_state: GameStateSecondary) -> str:
         """
         Takes in the game state of a game and returns
 

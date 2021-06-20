@@ -2,6 +2,7 @@ from AIInterface import AIKernel
 from ControllerInterface import ControllerSecondary
 from Game import Game
 
+
 class DummyAI(AIKernel):
 
     def __init__(self, controller: ControllerSecondary):

@@ -1,10 +1,13 @@
+from typing import Dict
+
+
 class GameStateKernel:
     """
     Informal Interface
     Defines methods for the GameState type
     """
 
-    def get_full_state(self) -> dict[str, str]:
+    def get_full_state(self) -> Dict[str, str or int]:
         """
         Returns:
              a dictionary object with the game state fully constructed like a JSON object
@@ -12,13 +15,13 @@ class GameStateKernel:
         pass
 
 
-class GameStateSecondary:
+class GameStateSecondary(GameStateKernel):
     """
     Informal Interface
     Defines secondary methods for the GameState type
     """
 
-    def get_zone(self, zone_type: str, owner_seat_id: int = None) -> dict[str, str]:
+    def get_zone(self, zone_type: str, owner_seat_id: int = None) -> Dict[str, str or int]:
         """
         Gets specified zone information
 
@@ -38,7 +41,7 @@ class GameStateSecondary:
         """
         pass
 
-    def get_actions(self) -> dict[str, str]:
+    def get_actions(self) -> Dict[str, str or int]:
         """
         Gets all possible actions that are currently available
 
@@ -47,7 +50,7 @@ class GameStateSecondary:
         """
         pass
 
-    def get_turn_info(self) -> dict[str, str]:
+    def get_turn_info(self) -> Dict[str, str or int]:
         """
         Gets all possible actions that are currently available
 
@@ -56,7 +59,7 @@ class GameStateSecondary:
         """
         pass
 
-    def get_players(self) -> dict[str, str]:
+    def get_players(self) -> Dict[str, str or int]:
         """
         Get player info
 
@@ -65,7 +68,7 @@ class GameStateSecondary:
         """
         pass
 
-    def get_annotations(self) -> dict[str, str]:
+    def get_annotations(self) -> Dict[str, str or int]:
         """
         Get annotation info
 
@@ -74,11 +77,30 @@ class GameStateSecondary:
         """
         pass
 
-    def get_game_info(self) -> dict[str, str]:
+    def get_game_info(self) -> Dict[str, str or int]:
         """
         Gets game info
 
         Returns:
             A properly formatted dictionary with all the information necessary for information on the game
+        """
+        pass
+
+    def clear(self) -> None:
+        """
+        Clears a gamestate back to its default value
+        """
+        pass
+
+    def update(self, updated_state: 'GameStateSecondary') -> None:
+        """
+        Updates self to the updated state. If self does not contain an index that updated_state does then the index
+        is added to state.
+        """
+        pass
+
+    def diff(self, state: 'GameStateSecondary') -> Dict[str, str or int]:
+        """
+        Returns the difference between the two states in a new state object
         """
         pass

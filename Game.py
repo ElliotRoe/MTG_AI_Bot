@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 
 from ControllerInterface import ControllerSecondary
 from AIInterface import AIKernel
@@ -15,7 +15,37 @@ class Game:
             return str(self.game_dict)
 
         def get_full_state(self) -> Dict[str, str or int]:
-            return self.game_dict
+            return dict(self.game_dict)
+
+        def get_turn_info(self) -> Dict[str, str or int]:
+            return self.get_full_state()['turnInfo']
+
+        def get_game_info(self) -> Dict[str, str or int]:
+            return self.get_full_state()['turnInfo']
+
+        def get_zone(self, zone_type: str, owner_seat_id: int = None) -> Dict[str, str or int]:
+            zones = self.get_full_state()['zones']
+            matching_zones = []
+            zone_to_return = None
+            for zone in zones:
+                if zone['type'] == zone_type:
+                    matching_zones.append(zone)
+            if len(matching_zones) > 1:
+                for zone in matching_zones:
+                    if zone['ownerSeatId'] == owner_seat_id:
+                        zone_to_return = zone
+            elif len(matching_zones) == 1:
+                zone_to_return = matching_zones[0]
+            return zone_to_return
+
+        def get_annotations(self) -> List[Dict]:
+            return self.get_full_state()['annotations']
+
+        def get_actions(self) -> List[Dict]:
+            return self.get_full_state()['actions']
+
+        def get_players(self) -> List[Dict]:
+            return self.get_full_state()['players']
 
         def __update_dict(self, dict_to_update: [str, str or int], dict_with_update: [str, str or int]):
             for key in dict_with_update:

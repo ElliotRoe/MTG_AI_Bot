@@ -12,11 +12,11 @@ class AIKernel:
         Takes in the game state of a game and returns
 
         Parameters:
-            game_state (str, ..., str): a valid game state of a game
+            game_state GameStateSecondary: a valid game state of a game
         Requires:
             game_state is of a valid form
         Returns:
-            An allowed move in String format
+            An allowed move in Dict format
         """
         pass
 

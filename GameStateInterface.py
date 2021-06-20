@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 
 
 class GameStateKernel:
@@ -11,6 +11,107 @@ class GameStateKernel:
         """
         Returns:
              a dictionary object with the game state fully constructed like a JSON object
+        Ensures:
+            Format of dict is as follows:
+            {
+                "turnInfo": {
+                    "phase": str,
+                    "turnNumber": int,
+                    "activePlayer": int,
+                    "priorityPlayer": int,
+                    "decisionPlayer": int,
+                    "nextPhase": str,
+                    "nextStep": str
+                },
+                "timers": [
+                    {
+                      "timerId": int,
+                      "type": str,
+                      "durationSec": int,
+                      "behavior": str,
+                      "warningThresholdSec": int
+                    },
+                    ...
+                ],
+                "gameObjects": [
+                    {
+                      "instanceId": int,
+                      "grpId": int,
+                      "type": str,
+                      "zoneId": int,
+                      "visibility": str,
+                      "ownerSeatId": int,
+                      "controllerSeatId": int,
+                      "superTypes": List[str],
+                      "cardTypes": List[str],
+                      "subtypes": List[str],
+                      "name": int,
+                      "abilities": List[int],
+                      "overlayGrpId": int
+                    },
+                    ...
+                ],
+                "players": [
+                    {
+                      "lifeTotal": int,
+                      "systemSeatNumber": int,
+                      "maxHandSize": int,
+                      "turnNumber": int,
+                      "teamId": int,
+                      "timerIds": [
+                        int,
+                        ...
+                      ],
+                      "controllerSeatId": int,
+                      "controllerType": str,
+                      "startingLifeTotal": int
+                    }
+                ],
+                "annotations": [
+                    {
+                        "id": 188,
+                        "affectedIds": List[int],
+                        "type": List[str],
+                        "details": [
+                            {
+                              "key": str,
+                              "type": str,
+                              "valueInt32": List[int]
+                            },
+                            ...
+                          ]
+                    },
+                    ...
+                ],
+                "actions": [
+                    {
+                        "seatId": int,
+                        "action": {
+                            "actionType": str,
+                            "instanceId": int,
+                            "manaCost": [
+                              {
+                                "color": List[str],
+                                "count": int
+                              },
+                              ...
+                            ]
+                        }
+                    },
+                    ...
+                ],
+                "zones": [
+                    {
+                      "zoneId": int,
+                      "type": str,
+                      "visibility": str,
+                      "ownerSeatId": int,
+                      "objectInstanceIds": List[int]
+                      "viewers": List[int]
+                    },
+                ],
+
+            }
         """
         pass
 
@@ -34,14 +135,7 @@ class GameStateSecondary(GameStateKernel):
             A properly formatted dictionary with all the information necessary needed for a zone
         """
 
-    def get_actions(self):
-        """
-        Gets a list of possible actions
-
-        """
-        pass
-
-    def get_actions(self) -> Dict[str, str or int]:
+    def get_actions(self) -> List[Dict]:
         """
         Gets all possible actions that are currently available
 
@@ -59,7 +153,7 @@ class GameStateSecondary(GameStateKernel):
         """
         pass
 
-    def get_players(self) -> Dict[str, str or int]:
+    def get_players(self) -> List[Dict]:
         """
         Get player info
 
@@ -68,7 +162,7 @@ class GameStateSecondary(GameStateKernel):
         """
         pass
 
-    def get_annotations(self) -> Dict[str, str or int]:
+    def get_annotations(self) -> List[Dict]:
         """
         Get annotation info
 

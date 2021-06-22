@@ -5,10 +5,10 @@ import time
 class LogReader:
     LOG_UPDATE_SPEED = 0.1
 
-    def __init__(self, patterns, user="Elliot Roe", player_id="LE3ZCMCJZBHUDGATTY2EJLUEIM"):
-        self.__user = user
+    def __init__(self, patterns, log_path="/Users/Elliot Roe/AppData/LocalLow/Wizards Of The Coast/MTGA/Player.log",
+                 player_id="LE3ZCMCJZBHUDGATTY2EJLUEIM"):
         self.__player = player_id
-        self.__log_path = "/Users/" + self.__user + "/AppData/LocalLow/Wizards Of The Coast/MTGA/Player.log"
+        self.__log_path = log_path
         self.__lines_containing_pattern = {}
         self.__has_new_line = {}
         for pattern in patterns:
@@ -19,7 +19,7 @@ class LogReader:
         self.__stop_monitor = False
 
     def __follow(self, the_file):
-        the_file.seek(0, 2)
+        the_file.seek(0)
         while not self.__stop_monitor:
             line = the_file.readline()
             if not line:

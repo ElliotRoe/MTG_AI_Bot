@@ -5,7 +5,8 @@ import time
 class LogReader:
     LOG_UPDATE_SPEED = 0.1
 
-    def __init__(self, patterns, log_path="/Users/Elliot Roe/AppData/LocalLow/Wizards Of The Coast/MTGA/Player.log",
+    def __init__(self, patterns, callback,
+                 log_path="/Users/Elliot Roe/AppData/LocalLow/Wizards Of The Coast/MTGA/Player.log",
                  player_id="LE3ZCMCJZBHUDGATTY2EJLUEIM"):
         self.__player = player_id
         self.__log_path = log_path
@@ -18,8 +19,11 @@ class LogReader:
         self.__log_monitor_thread = None
         self.__stop_monitor = False
 
+        # Callback func should take two parameters: pattern, and string containing pattern
+        self.__callback = callback
+
     def __follow(self, the_file):
-        the_file.seek(0)
+        the_file.seek(0, 2)
         while not self.__stop_monitor:
             line = the_file.readline()
             if not line:
@@ -28,7 +32,7 @@ class LogReader:
             yield line
 
     def __monitor_log_file(self):
-        print(self.__log_path)
+        # debug: print(self.__log_path)
         log_file = open(self.__log_path, "r")
         log_lines = self.__follow(log_file)
         for line in log_lines:
@@ -38,6 +42,7 @@ class LogReader:
                 if pattern in line:
                     self.__has_new_line[pattern] = True
                     self.__lines_containing_pattern[pattern] = line
+                    self.__callback(pattern, self.__lines_containing_pattern[pattern])
 
     def start_log_monitor(self):
         self.__stop_monitor = False
@@ -57,3 +62,18 @@ class LogReader:
 
     def has_new_line(self, pattern):
         return self.__has_new_line[pattern]
+
+    def full_log_read(self):
+        """ Full read of the log so far """
+        if not self.is_monitoring():
+            log_file = open(self.__log_path, "r")
+            line = log_file.readline()
+            while line:
+                for pattern in self.__lines_containing_pattern:
+                    if pattern in line:
+                        self.__has_new_line[pattern] = True
+                        self.__lines_containing_pattern[pattern] = line
+                        self.__callback(pattern, self.__lines_containing_pattern[pattern])
+                line = log_file.readline()
+        else:
+            print("Unable to do read as log monitoring is already in progress")

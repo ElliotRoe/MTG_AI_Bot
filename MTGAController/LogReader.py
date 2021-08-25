@@ -5,7 +5,7 @@ import time
 class LogReader:
     LOG_UPDATE_SPEED = 0.1
 
-    def __init__(self, patterns, callback,
+    def __init__(self, patterns, callback=lambda pat, patstr: None,
                  log_path="/Users/Elliot Roe/AppData/LocalLow/Wizards Of The Coast/MTGA/Player.log",
                  player_id="LE3ZCMCJZBHUDGATTY2EJLUEIM"):
         self.__player = player_id

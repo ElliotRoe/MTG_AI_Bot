@@ -81,6 +81,11 @@ class ControllerKernel:
 
     def resolve(self):
         """ Passes and or resolves a decision in the game. Basically a "do nothing" method """
+        pass
+
+    def all_attack(self) -> None:
+        """ Attacks with all cards that can attack """
+        pass
 
 
 class ControllerSecondary(ControllerKernel):
@@ -95,10 +100,6 @@ class ControllerSecondary(ControllerKernel):
         hand, life totals, spells on the stack, cards in other zones, turn phase, turn)
         """
 
-        pass
-
-    def all_attack(self) -> None:
-        """ Attacks with all cards that can attack """
         pass
 
     def all_block(self) -> None:

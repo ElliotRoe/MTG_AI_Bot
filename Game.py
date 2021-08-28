@@ -8,7 +8,7 @@ from GameStateInterface import GameStateSecondary
 
 class Game:
     class GameState(GameStateSecondary):
-        def __init__(self, game_dict: [str, str or int]):
+        def __init__(self, game_dict: [str, str or int] = {}):
             self.game_dict = game_dict
 
         def __str__(self):

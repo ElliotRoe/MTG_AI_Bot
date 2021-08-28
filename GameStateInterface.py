@@ -7,6 +7,8 @@ class GameStateKernel:
     Defines methods for the GameState type
     """
 
+    GAME_STATE_KEYS = ['turnInfo', 'timers', 'gameObjects', 'players', 'annotations', 'actions', 'zones']
+
     def get_full_state(self) -> Dict[str, str or int]:
         """
         Returns:

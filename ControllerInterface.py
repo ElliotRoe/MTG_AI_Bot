@@ -9,11 +9,11 @@ class ControllerKernel:
 
     pass
 
-    def get_game_state(self):
+    def get_game_state(self) -> 'GameStateSecondary':
         """ 
         Returns a tuple representing the game's state
         Returns:
-            Ugly dump of tuple which is basically just the MTGA log
+            A GameState object containing the current state of the game
         """
 
     pass
@@ -45,8 +45,6 @@ class ControllerKernel:
             number of cards that are able to block > 0
         Ensures:
             Specified attacker is attempted to be blocked by blocker card
-        Returns:
-            If the block was successful
         """
         pass
 
@@ -60,10 +58,21 @@ class ControllerKernel:
             The requirements to cast the card are met
         Ensures:
             Specified card is cast
-        Returns:
-            If the cast was successful
         """
         pass
+
+    def select_target(self, target_id: int) -> None:
+        """
+        Selects a target for spell or ability specified by target id.
+
+        Parameters:
+            target_id (int): The id of the spell or abilities target
+        Requires:
+            The target id is on the battlefield Must occur after an ability is used or a spell is cast that needs
+            a target specified (MTGA example: the player is specifically prompted for a target after a spell is cast)
+        Ensures:
+            Specified card with a corresponding id to target_id is selected as the target
+        """
 
     def activate_ability(self, card_id: int, ability_id: int) -> None:
         """

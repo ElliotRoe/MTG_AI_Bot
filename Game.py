@@ -2,7 +2,6 @@ from typing import Dict, List
 
 from ControllerInterface import ControllerSecondary
 from AIInterface import AIKernel
-from MTGAController import Controller
 from GameStateInterface import GameStateSecondary
 
 

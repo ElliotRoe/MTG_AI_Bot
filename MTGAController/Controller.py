@@ -17,7 +17,10 @@ class Controller(ControllerSecondary):
         self.log_reader = LogReader(self.patterns.values(), log_path=log_path)
         self.mouse_controller = mouse.Controller()
         self.cast_speed = 0.005
+        # Height of the mouse when cards are scanned for casting
         self.cast_height = 30
+        # Offset of the resolve button from the bottom right
+        self.resolve_button_br_offset = (165, 136)
         self.cast_card_dist = 10
         self.all_attack_coordinates = (screen_bounds[1][0] - 20, screen_bounds[1][0] - 50)
         self.updated_game_state = Game.GameState()
@@ -49,7 +52,7 @@ class Controller(ControllerSecondary):
                 time.sleep(self.cast_speed)
             current_hovered_id = self.__parse_object_id_line(self.log_reader.get_latest_line_containing_pattern(
                 self.patterns['hover_id']))
-            print(str(current_hovered_id) + '|' + str(card_id))
+            # print(str(current_hovered_id) + '|' + str(card_id))
         time.sleep(1)
         self.mouse_controller.click(Button.left, 1)
         time.sleep(0.1)
@@ -62,20 +65,28 @@ class Controller(ControllerSecondary):
         self.mouse_controller.click(Button.left, 1)
 
     def resolve(self):
-        pass
+        self.mouse_controller.position = (
+            self.screen_bounds[1][0] - self.resolve_button_br_offset[0],
+            self.screen_bounds[1][1] - self.resolve_button_br_offset[1],
+        )
+        self.mouse_controller.click(Button.left, 1)
 
     def __log_callback(self, pattern: str, line_containing_pattern: str):
         if pattern == self.patterns["game_state"]:
             self.__update_game_state(json.load(line_containing_pattern))
 
     def __update_game_state(self, raw_dict: [str, str or int]):
-        game_state = self.__get_game_state_from_raw_dict(raw_dict)
+        game_state = Controller.get_game_state_from_raw_dict(raw_dict, )
         self.updated_game_state.update(game_state)
 
-    def __get_game_state_from_raw_dict(self, raw_dict: [str, str or int]):
+    def get_game_state(self) -> 'GameStateSecondary':
+        return self.updated_game_state
+
+    @staticmethod
+    def get_game_state_from_raw_dict(raw_dict: [str, str or int]):
         temp_dict = raw_dict['greToClientEvent']
         temp_arr = temp_dict['greToClientMessages']
-        return_game_state = Game.GameState()
+        return_game_state = Game.GameState({})
         for message in temp_arr:
             if message['type'] == "GREMessageType_GameStateMessage":
                 raw_game_state_dict = message['gameStateMessage']

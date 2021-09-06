@@ -5,7 +5,11 @@ class ControllerKernel:
     """
 
     def start_game(self) -> None:
-        """ Starts a new MTG game from the "home screen"  """
+        """
+        Starts a new MTG game from the "home screen"
+        Requires:
+            The decision callback to be set
+        """
 
     pass
 
@@ -88,13 +92,32 @@ class ControllerKernel:
         """
         pass
 
-    def resolve(self):
-        """ Passes and or resolves a decision in the game. Basically a "do nothing" method """
+    def resolve(self) -> None:
+        """ Passes No attacks and or resolves a decision in the game. Basically a "do nothing" method """
+        pass
+
+    def auto_pass(self) -> None:
+        """ Auto passes a turn and forfeits priority until player regains it through opponent """
+        pass
+
+    def unconditional_auto_pass(self) -> None:
+        """ Auto passes a turn unconditionally. Cannot regain priority for the turn """
         pass
 
     def all_attack(self) -> None:
         """ Attacks with all cards that can attack """
         pass
+
+    def set_decision_callback(self, method) -> None:
+        """
+        Sets the decision callback for the controller which calls method every single time a decision is required from the player. In other words, everytime the game is
+        paused waiting on a player decision method is called
+
+        Parameters:
+            method: the callback method to be called
+        Requires:
+            Method must take a single parameter of the current game state
+        """
 
 
 class ControllerSecondary(ControllerKernel):

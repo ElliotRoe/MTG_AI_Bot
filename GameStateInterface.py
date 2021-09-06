@@ -18,6 +18,7 @@ class GameStateKernel:
             {
                 "turnInfo": {
                     "phase": str,
+                    "step": str,
                     "turnNumber": int,
                     "activePlayer": int,
                     "priorityPlayer": int,

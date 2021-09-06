@@ -17,7 +17,11 @@ class Game:
             return dict(self.game_dict)
 
         def get_turn_info(self) -> Dict[str, str or int]:
-            return self.get_full_state()['turnInfo']
+            turn_info_dict = None
+            full_state_dict = self.get_full_state()
+            if 'turnInfo' in full_state_dict.keys():
+                turn_info_dict = full_state_dict['turnInfo']
+            return turn_info_dict
 
         def get_game_info(self) -> Dict[str, str or int]:
             return self.get_full_state()['turnInfo']

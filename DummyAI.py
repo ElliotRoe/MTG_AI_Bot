@@ -5,6 +5,9 @@ from GameState import GameState
 
 class DummyAI(AIKernel):
 
+    def generate_keep(self, card_list) -> bool:
+        return True
+
     def generate_move(self, game_state: GameState):
         move = {'resolve': []}
         action_list = game_state.get_actions()

@@ -116,7 +116,25 @@ class ControllerKernel:
         Requires:
             Method must take a single parameter of the current game state
         """
+        pass
 
+    def set_mulligan_decision_callback(self, method) -> None:
+        """
+        Sets the callback method for the controller which calls it everytime a mulligan decision is made.
+        Parameters
+            method: the callback method to be called
+        Requires:
+            method must take a parameter that is the list of card ids
+        """
+        pass
+
+    def keep(self, keep: bool):
+        """
+        Parameters
+            keep: whether or not to keep the hand given
+        Requires:
+            the player must be being prompted for a mulligan decision
+        """
 
 class ControllerSecondary(ControllerKernel):
     """

@@ -11,7 +11,12 @@ class Game:
 
     def start(self):
         self.controller.start_game()
+        self.controller.set_mulligan_decision_callback(self.mulligan_decision_method)
         self.controller.set_decision_callback(self.decision_method)
+
+    def mulligan_decision_method(self, card_list):
+        keep = self.ai.generate_keep(card_list)
+        self.controller.keep(keep)
 
     def decision_method(self, current_game_state: GameState):
         move = self.ai.generate_move(current_game_state)

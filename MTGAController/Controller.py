@@ -14,6 +14,9 @@ class Controller(ControllerSecondary):
 
     def __init__(self, log_path, screen_bounds=((0, 0), (1600, 900))):
         self.__decision_callback = None
+        self.__mulligan_decision_callback = None
+        self.__has_mulled_keep = False
+        self.__intro_time = 15
         self.screen_bounds = screen_bounds
         self.patterns = {'game_state': '"type": "GREMessageType_GameStateMessage"', 'hover_id': 'objectId'}
         self.log_reader = LogReader(self.patterns.values(), log_path=log_path, callback=self.__log_callback)
@@ -24,6 +27,9 @@ class Controller(ControllerSecondary):
         self.cast_height = 30
         # Offset of the resolve button from the bottom right
         self.main_br_button_offset = (165, 136)
+        self.mulligan_keep_coors = (1101, 870)
+        self.mulligan_mull_coors = (801, 870)
+        self.player_button_coors = (1699, 996)
         self.cast_card_dist = 10
         self.main_br_button_coordinates = (
             self.screen_bounds[1][0] - self.main_br_button_offset[0],
@@ -34,10 +40,20 @@ class Controller(ControllerSecondary):
     def start_game(self) -> None:
         self.log_reader.start_log_monitor()
 
-        # TODO: Add mouse movement to press the play button
+        self.mouse_controller.position = (1699, 996)
+        self.mouse_controller.press(Button.left)
+        time.sleep(0.2)
+        self.mouse_controller.release(Button.left)
+        time.sleep(1)
+        self.mouse_controller.press(Button.left)
+        time.sleep(0.2)
+        self.mouse_controller.release(Button.left)
 
     def set_decision_callback(self, method) -> None:
         self.__decision_callback = method
+
+    def set_mulligan_decision_callback(self, method) -> None:
+        self.__mulligan_decision_callback = method
 
     def end_game(self) -> None:
         self.log_reader.stop_log_monitor()
@@ -89,6 +105,13 @@ class Controller(ControllerSecondary):
     def get_game_state(self) -> 'GameStateSecondary':
         return self.updated_game_state
 
+    def keep(self, keep: bool):
+        if keep:
+            self.mouse_controller.position = self.mulligan_keep_coors
+        else:
+            self.mouse_controller.position = self.mulligan_mull_coors
+        self.mouse_controller.click(Button.left)
+
     @staticmethod
     def __parse_object_id_line(line):
         number_string = ""
@@ -107,8 +130,12 @@ class Controller(ControllerSecondary):
         game_state = Controller.__get_game_state_from_raw_dict(raw_dict)
         self.updated_game_state.update(game_state)
         turn_info_dict = self.updated_game_state.get_turn_info()
-        if turn_info_dict is not None and turn_info_dict['decisionPlayer'] == 1:
+        if turn_info_dict is not None and turn_info_dict['decisionPlayer'] == 1 and self.__has_mulled_keep:
             self.__decision_callback(self.updated_game_state)
+        elif not self.__has_mulled_keep:
+            time.sleep(self.__intro_time)
+            self.__mulligan_decision_callback([])
+            self.__has_mulled_keep = True
 
     @staticmethod
     def __get_game_state_from_raw_dict(raw_dict: [str, str or int]):

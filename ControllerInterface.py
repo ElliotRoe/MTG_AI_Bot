@@ -29,12 +29,10 @@ class ControllerKernel:
         Parameters:
             card_id (int): the id of the card that should attack. If card = -1 then all should attack
         Requires:
-            game_wave == ('player_attacking')
-            number of cards that are able to attack > 0
+            specified card can attack
         Ensures:
             Specified card attacks
         """
-
     pass
 
     def block(self, attacker_id: int, blocker_id: int) -> None:

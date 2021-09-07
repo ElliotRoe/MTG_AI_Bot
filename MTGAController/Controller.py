@@ -7,7 +7,7 @@ from ControllerInterface import ControllerSecondary
 from MTGAController.LogReader import LogReader
 from pynput import mouse
 from pynput import keyboard
-from Game import Game
+from GameState import GameState
 
 
 class Controller(ControllerSecondary):
@@ -29,7 +29,7 @@ class Controller(ControllerSecondary):
             self.screen_bounds[1][0] - self.main_br_button_offset[0],
             self.screen_bounds[1][1] - self.main_br_button_offset[1],
         )
-        self.updated_game_state = Game.GameState()
+        self.updated_game_state = GameState()
 
     def start_game(self) -> None:
         self.log_reader.start_log_monitor()
@@ -114,14 +114,14 @@ class Controller(ControllerSecondary):
     def __get_game_state_from_raw_dict(raw_dict: [str, str or int]):
         temp_dict = raw_dict['greToClientEvent']
         temp_arr = temp_dict['greToClientMessages']
-        return_game_state = Game.GameState({})
+        return_game_state = GameState({})
         for message in temp_arr:
             if message['type'] == "GREMessageType_GameStateMessage":
                 raw_game_state_dict = message['gameStateMessage']
                 game_state_dict = {}
-                for key in Game.GameState.GAME_STATE_KEYS:
+                for key in GameState.GAME_STATE_KEYS:
                     if key in raw_game_state_dict:
                         game_state_dict[key] = raw_game_state_dict[key]
-                generated_game_state = Game.GameState(game_state_dict)
+                generated_game_state = GameState(game_state_dict)
                 return_game_state.update(generated_game_state)
         return return_game_state

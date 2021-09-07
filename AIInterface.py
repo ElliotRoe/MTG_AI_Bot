@@ -7,16 +7,16 @@ class AIKernel:
     Defines kernel methods for the AI type.
     """
 
-    def generate_move(self, game_state: GameStateSecondary) -> str:
+    def generate_move(self, game_state: GameStateSecondary):
         """
-        Takes in the game state of a game and returns
+        Takes in the game state of a game and returns a Dict of representing a valid move
 
         Parameters:
             game_state GameStateSecondary: a valid game state of a game
         Requires:
             game_state is of a valid form
         Returns:
-            An allowed move in Dict format
+            [valid_move: [int,...]]
         """
         pass
 

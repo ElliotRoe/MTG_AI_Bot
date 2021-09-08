@@ -17,12 +17,13 @@ class Controller(ControllerSecondary):
         self.__mulligan_decision_callback = None
         self.__has_mulled_keep = False
         self.__intro_time = 15
+        self.__decision_delay = 4
         self.screen_bounds = screen_bounds
         self.patterns = {'game_state': '"type": "GREMessageType_GameStateMessage"', 'hover_id': 'objectId'}
         self.log_reader = LogReader(self.patterns.values(), log_path=log_path, callback=self.__log_callback)
         self.keyboard_controller = keyboard.Controller()
         self.mouse_controller = mouse.Controller()
-        self.cast_speed = 0.005
+        self.cast_speed = 0.01
         # Height of the mouse when cards are scanned for casting
         self.cast_height = 30
         # Offset of the resolve button from the bottom right
@@ -67,7 +68,7 @@ class Controller(ControllerSecondary):
                 time.sleep(self.cast_speed)
             current_hovered_id = self.__parse_object_id_line(self.log_reader.get_latest_line_containing_pattern(
                 self.patterns['hover_id']))
-            # print(str(current_hovered_id) + '|' + str(card_id))
+            print(str(current_hovered_id) + '|' + str(card_id))
         time.sleep(1)
         self.mouse_controller.click(Button.left, 1)
         time.sleep(0.1)
@@ -129,8 +130,10 @@ class Controller(ControllerSecondary):
     def __update_game_state(self, raw_dict: [str, str or int]):
         game_state = Controller.__get_game_state_from_raw_dict(raw_dict)
         self.updated_game_state.update(game_state)
+        print(self.updated_game_state)
         turn_info_dict = self.updated_game_state.get_turn_info()
-        if turn_info_dict is not None and turn_info_dict['decisionPlayer'] == 1 and self.__has_mulled_keep:
+        if self.updated_game_state.is_complete() and turn_info_dict['decisionPlayer'] == 1 and self.__has_mulled_keep:
+            time.sleep(self.__decision_delay)
             self.__decision_callback(self.updated_game_state)
         elif not self.__has_mulled_keep:
             time.sleep(self.__intro_time)

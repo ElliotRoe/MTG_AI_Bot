@@ -5,6 +5,10 @@ from GameStateInterface import GameStateSecondary
 class GameState(GameStateSecondary):
     def __init__(self, game_dict: [str, str or int] = {}):
         self.game_dict = game_dict
+        self.game_dict_expected_keys = ["turnInfo", "timers", "gameObjects", "players", "annotations", "actions",
+                                        "zones"]
+        self.ti_dict_expected_keys = ["phase", "phase", "turnNumber", "activePlayer", "priorityPlayer",
+                                      "decisionPlayer", "nextPhase", "nextStep"]
 
     def __str__(self):
         return str(self.game_dict)
@@ -20,7 +24,7 @@ class GameState(GameStateSecondary):
         return turn_info_dict
 
     def get_game_info(self) -> Dict[str, str or int]:
-        return self.get_full_state()['turnInfo']
+        return self.get_full_state()['gameInfo']
 
     def get_zone(self, zone_type: str, owner_seat_id: int = None) -> Dict[str, str or int]:
         zones = self.get_full_state()['zones']
@@ -45,6 +49,20 @@ class GameState(GameStateSecondary):
 
     def get_players(self) -> List[Dict]:
         return self.get_full_state()['players']
+
+    def is_complete(self):
+        is_complete = True
+        current_keys = self.game_dict.keys()
+        for expected_key in self.game_dict_expected_keys:
+            if expected_key not in current_keys:
+                is_complete = False
+                return is_complete
+        turn_info_keys = self.game_dict['turnInfo'].keys()
+        for expected_ti_key in self.ti_dict_expected_keys:
+            if expected_ti_key not in turn_info_keys:
+                is_complete = False
+                return is_complete
+        return is_complete
 
     def __update_dict(self, dict_to_update: [str, str or int], dict_with_update: [str, str or int]):
         for key in dict_with_update:

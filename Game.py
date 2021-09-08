@@ -21,7 +21,7 @@ class Game:
     def decision_method(self, current_game_state: GameState):
         move = self.ai.generate_move(current_game_state)
         print(move)
-        move_name = move.keys()[0]
+        move_name = list(move.keys())[0]
         if move_name == 'attack':
             self.controller.attack(move[move_name][0])
         elif move_name == 'all_attack':

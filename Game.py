@@ -27,7 +27,7 @@ class Game:
         elif move_name == 'all_attack':
             self.controller.all_attack()
         elif move_name == 'cast':
-            self.controller.cast(move[move_name][0])
+            self.controller.cast(int(move[move_name][0]))
         elif move_name == 'block':
             self.controller.block(move[move_name][0], move[move_name][1])
         elif move_name == 'select_target':

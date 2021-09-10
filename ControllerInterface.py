@@ -4,9 +4,12 @@ class ControllerKernel:
     Defines kernel methods for the Controller type.
     """
 
-    def start_game(self) -> None:
+    def start_game_from_home_screen(self) -> None:
+        """ Starts a game from the home screen """
+
+    def start_monitor(self) -> None:
         """
-        Starts a new MTG game from the "home screen"
+        Starts the monitor of the log
         Requires:
             The decision callback to be set
         """
@@ -141,19 +144,5 @@ class ControllerSecondary(ControllerKernel):
     Informal Interface
     Defines secondary methods for the Controller type.
     """
-
-    def get_game_state_pretty(self):
-        """
-        Returns a tuple representing the game's state Returns: (permanents and attributes, player's hand, opponent's
-        hand, life totals, spells on the stack, cards in other zones, turn phase, turn)
-        """
-
-        pass
-
-    def all_block(self) -> None:
-        """ Blocks with all creatures that can block. There is no particular order. Note: kinda complicated to
-        implement """
-        pass
-
-    def game_over(self) -> bool:
-        """ Checks if the game is over and returns true if it is """
+    def start_game(self) -> None:
+        """ Starts log monitor and starts the game """

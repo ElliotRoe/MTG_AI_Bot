@@ -1,4 +1,5 @@
 import json
+import threading
 import time
 
 from pynput.mouse import Button
@@ -31,6 +32,7 @@ class Controller(ControllerSecondary):
         self.mulligan_keep_coors = (1101, 870)
         self.mulligan_mull_coors = (801, 870)
         self.player_button_coors = (1699, 996)
+        self.home_play_button_coors = (1699, 996)
         self.cast_card_dist = 10
         self.main_br_button_coordinates = (
             self.screen_bounds[1][0] - self.main_br_button_offset[0],
@@ -38,10 +40,8 @@ class Controller(ControllerSecondary):
         )
         self.updated_game_state = GameState()
 
-    def start_game(self) -> None:
-        self.log_reader.start_log_monitor()
-
-        self.mouse_controller.position = (1699, 996)
+    def start_game_from_home_screen(self):
+        self.mouse_controller.position = self.home_play_button_coors
         self.mouse_controller.press(Button.left)
         time.sleep(0.2)
         self.mouse_controller.release(Button.left)
@@ -49,6 +49,13 @@ class Controller(ControllerSecondary):
         self.mouse_controller.press(Button.left)
         time.sleep(0.2)
         self.mouse_controller.release(Button.left)
+
+    def start_monitor(self) -> None:
+        self.log_reader.start_log_monitor()
+
+    def start_game(self) -> None:
+        self.start_monitor()
+        self.start_game_from_home_screen()
 
     def set_decision_callback(self, method) -> None:
         self.__decision_callback = method
@@ -134,7 +141,8 @@ class Controller(ControllerSecondary):
         turn_info_dict = self.updated_game_state.get_turn_info()
         if self.updated_game_state.is_complete() and turn_info_dict['decisionPlayer'] == 1 and self.__has_mulled_keep:
             time.sleep(self.__decision_delay)
-            self.__decision_callback(self.updated_game_state)
+            execution_thread = threading.Thread(target=lambda: self.__decision_callback(self.updated_game_state))
+            execution_thread.start()
         elif not self.__has_mulled_keep:
             time.sleep(self.__intro_time)
             self.__mulligan_decision_callback([])

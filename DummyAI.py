@@ -19,7 +19,7 @@ class DummyAI(AIKernel):
                 elif turn_info['phase'] == 'Phase_Main1' or turn_info['phase'] == 'Phase_Main2':
                     for action_wrapper in action_list:
                         action = action_wrapper['action']
-                        if action['actionType'] == 'ActionType_Cast':
+                        if action['actionType'] == 'ActionType_Play':
                             move = {'cast': [action['instanceId']]}
                             break
         return move

@@ -16,8 +16,9 @@ class Controller(ControllerSecondary):
     def __init__(self, log_path, screen_bounds=((0, 0), (1600, 900))):
         self.__decision_callback = None
         self.__mulligan_decision_callback = None
+        self.__current_execution_thread = None
         self.__has_mulled_keep = False
-        self.__intro_time = 15
+        self.__intro_delay = 15
         self.__decision_delay = 4
         self.screen_bounds = screen_bounds
         self.patterns = {'game_state': '"type": "GREMessageType_GameStateMessage"', 'hover_id': 'objectId'}
@@ -88,8 +89,8 @@ class Controller(ControllerSecondary):
         self.mouse_controller.click(Button.left, 1)
 
     def resolve(self) -> None:
-        if self.updated_game_state.get_game_info()['step'] != 'Step_DeclareAttack' \
-                or self.updated_game_state.get_game_info()['activePlayer'] == 2:
+        if self.updated_game_state.get_turn_info()['step'] != 'Step_DeclareAttack' \
+                or self.updated_game_state.get_turn_info()['activePlayer'] == 2:
             self.mouse_controller.position = self.main_br_button_coordinates
         else:
             self.mouse_controller.position = (
@@ -140,12 +141,13 @@ class Controller(ControllerSecondary):
         print(self.updated_game_state)
         turn_info_dict = self.updated_game_state.get_turn_info()
         if self.updated_game_state.is_complete() and turn_info_dict['decisionPlayer'] == 1 and self.__has_mulled_keep:
-            time.sleep(self.__decision_delay)
-            execution_thread = threading.Thread(target=lambda: self.__decision_callback(self.updated_game_state))
-            execution_thread.start()
+            self.__current_execution_thread = threading.Timer(self.__decision_delay,
+                                                              lambda: self.__decision_callback(self.updated_game_state))
+            self.__current_execution_thread.start()
         elif not self.__has_mulled_keep:
-            time.sleep(self.__intro_time)
-            self.__mulligan_decision_callback([])
+            self.__current_execution_thread = threading.Timer(self.__intro_delay,
+                                                              lambda: self.__mulligan_decision_callback([]))
+            self.__current_execution_thread.start()
             self.__has_mulled_keep = True
 
     @staticmethod

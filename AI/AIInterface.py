@@ -11,7 +11,7 @@ class AIKernel:
         """ Returns a true or false value to determine whether a hand should be taken """
         pass
 
-    def generate_move(self, game_state: GameStateSecondary):
+    def generate_move(self, game_state: GameStateSecondary, inst_id_grp_id_dict):
         """
         Takes in the game state of a game and returns a Dict of representing a valid move
 

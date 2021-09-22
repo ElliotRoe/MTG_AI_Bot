@@ -1,5 +1,5 @@
 from typing import Dict, List
-from GameStateInterface import GameStateSecondary
+from Controller.Utilities.GameStateInterface import GameStateSecondary
 
 
 class GameState(GameStateSecondary):
@@ -49,6 +49,9 @@ class GameState(GameStateSecondary):
 
     def get_players(self) -> List[Dict]:
         return self.get_full_state()['players']
+
+    def get_game_objects(self) -> List[Dict[str, str or int]]:
+        return self.get_full_state()['gameObjects']
 
     def is_complete(self):
         is_complete = True

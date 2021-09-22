@@ -19,7 +19,7 @@ class Game:
         self.controller.keep(keep)
 
     def decision_method(self, current_game_state: GameState):
-        move = self.ai.generate_move(current_game_state)
+        move = self.ai.generate_move(current_game_state, self.controller.get_inst_id_grp_id_dict())
         print(move)
         move_name = list(move.keys())[0]
         if move_name == 'attack':

@@ -21,7 +21,7 @@ class DummyAI(AIKernel):
             self.__has_land_been_played_this_turn = False
             self.__mana_pool.reset_mana()
 
-    def generate_move(self, game_state: GameState):
+    def generate_move(self, game_state: GameState, inst_id_grp_id_dict):
         move = {'resolve': []}
         self.__new_turn_check(game_state)
         turn_info = game_state.get_turn_info()
@@ -40,7 +40,7 @@ class DummyAI(AIKernel):
                             break
                         elif action['actionType'] == 'ActionType_Cast' and \
                                 self.__mana_pool.has_mana(action['manaCost']):
-                            card_info = CardInfo.get_card_info(action['instanceId'])
+                            card_info = CardInfo.get_card_info(inst_id_grp_id_dict[action['instanceId']])
                             if 'Creature' in card_info['type_line']:
                                 move = {'cast': [action['instanceId']]}
                                 self.__mana_pool.use_mana(action['manaCost'])

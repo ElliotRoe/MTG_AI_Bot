@@ -69,6 +69,7 @@ class Controller(ControllerSecondary):
         self.log_reader.stop_log_monitor()
 
     def cast(self, card_id: int) -> None:
+        self.mouse_controller.position = (self.screen_bounds[0][0], self.screen_bounds[1][1] + self.cast_height * 10)
         time.sleep(1)
         self.mouse_controller.position = (self.screen_bounds[0][0], self.screen_bounds[1][1] + self.cast_height)
         current_hovered_id = None
@@ -83,6 +84,8 @@ class Controller(ControllerSecondary):
         self.mouse_controller.click(Button.left, 1)
         time.sleep(0.1)
         self.mouse_controller.click(Button.left, 1)
+        time.sleep(0.7)
+        self.mouse_controller.position = (self.screen_bounds[0][0], self.screen_bounds[1][1] + self.cast_height * 10)
 
     def all_attack(self) -> None:
         self.mouse_controller.position = self.main_br_button_coordinates
@@ -123,8 +126,8 @@ class Controller(ControllerSecondary):
             self.mouse_controller.position = self.mulligan_mull_coors
         self.mouse_controller.click(Button.left)
 
-    def get_grp_id(self, inst_id):
-        return self.__inst_id_grp_id_dict[inst_id]
+    def get_inst_id_grp_id_dict(self):
+        return self.__inst_id_grp_id_dict
 
     @staticmethod
     def __parse_object_id_line(line):
@@ -157,12 +160,13 @@ class Controller(ControllerSecondary):
                                                                   lambda:
                                                                   self.__decision_callback(self.updated_game_state))
                 self.__current_execution_thread.start()
-            elif not self.__has_mulled_keep:
-                self.__current_execution_thread = threading.Timer(self.__intro_delay,
-                                                                  lambda:
-                                                                  self.__mulligan_decision_callback([]))
-                self.__current_execution_thread.start()
-                self.__has_mulled_keep = True
+        elif not self.__has_mulled_keep:
+            self.__current_execution_thread = threading.Timer(self.__intro_delay,
+                                                              lambda:
+                                                              self.__mulligan_decision_callback([]))
+            self.__current_execution_thread.start()
+            self.__has_mulled_keep = True
+            print('making mull decision')
 
     @staticmethod
     def __get_game_state_from_raw_dict(raw_dict: [str, str or int]):

@@ -165,7 +165,7 @@ class GameStateSecondary(GameStateKernel):
         """
         pass
 
-    def get_annotations(self) -> List[Dict]:
+    def get_annotations(self) -> List[Dict[str, str or int]]:
         """
         Get annotation info
 
@@ -180,6 +180,13 @@ class GameStateSecondary(GameStateKernel):
 
         Returns:
             A properly formatted dictionary with all the information necessary for information on the game
+        """
+        pass
+
+    def get_game_objects(self) -> List[Dict[str, str or int]]:
+        """
+        Returns:
+             A list of properly formatted dictionaries with all gameObject info
         """
         pass
 

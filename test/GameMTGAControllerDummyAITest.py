@@ -1,8 +1,8 @@
 import time
 
 from Game import Game as G
-from MTGAController.Controller import Controller as cont
-from DummyAI import DummyAI as ai
+from Controller.MTGAController.Controller import Controller as cont
+from AI.DummyAI import DummyAI as ai
 
 main_game = G(cont('/home/johndoe/Games/magic-the-gathering-arena/dosdevices/c:/users/johndoe/AppData' +
                    '/LocalLow/Wizards Of The Coast/MTGA/Player.log', screen_bounds=((0, 0), (1920, 1080))), ai())

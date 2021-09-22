@@ -1,4 +1,4 @@
-from GameStateInterface import GameStateSecondary
+from Controller.Utilities.GameStateInterface import GameStateSecondary
 
 
 class AIKernel:

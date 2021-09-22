@@ -4,11 +4,11 @@ import time
 
 from pynput.mouse import Button
 
-from ControllerInterface import ControllerSecondary
-from MTGAController.LogReader import LogReader
+from Controller.ControllerInterface import ControllerSecondary
+from Controller.MTGAController.LogReader import LogReader
 from pynput import mouse
 from pynput import keyboard
-from GameState import GameState
+from Controller.Utilities.GameState import GameState
 
 
 class Controller(ControllerSecondary):
@@ -40,6 +40,7 @@ class Controller(ControllerSecondary):
             self.screen_bounds[1][1] - self.main_br_button_offset[1],
         )
         self.updated_game_state = GameState()
+        self.__inst_id_grp_id_dict = {}
 
     def start_game_from_home_screen(self):
         self.mouse_controller.position = self.home_play_button_coors
@@ -68,6 +69,7 @@ class Controller(ControllerSecondary):
         self.log_reader.stop_log_monitor()
 
     def cast(self, card_id: int) -> None:
+        time.sleep(1)
         self.mouse_controller.position = (self.screen_bounds[0][0], self.screen_bounds[1][1] + self.cast_height)
         current_hovered_id = None
         while current_hovered_id != card_id:
@@ -121,6 +123,9 @@ class Controller(ControllerSecondary):
             self.mouse_controller.position = self.mulligan_mull_coors
         self.mouse_controller.click(Button.left)
 
+    def get_grp_id(self, inst_id):
+        return self.__inst_id_grp_id_dict[inst_id]
+
     @staticmethod
     def __parse_object_id_line(line):
         number_string = ""
@@ -135,20 +140,29 @@ class Controller(ControllerSecondary):
         if pattern == self.patterns["game_state"]:
             self.__update_game_state(json.loads(line_containing_pattern))
 
+    def __update_inst_id__grp_id_dict(self, object_dict_arr):
+        for object_dict in object_dict_arr:
+            if object_dict['instanceId'] not in self.__inst_id_grp_id_dict.keys():
+                self.__inst_id_grp_id_dict[object_dict['instanceId']] = object_dict['grpId']
+
     def __update_game_state(self, raw_dict: [str, str or int]):
         game_state = Controller.__get_game_state_from_raw_dict(raw_dict)
         self.updated_game_state.update(game_state)
         print(self.updated_game_state)
         turn_info_dict = self.updated_game_state.get_turn_info()
-        if self.updated_game_state.is_complete() and turn_info_dict['decisionPlayer'] == 1 and self.__has_mulled_keep:
-            self.__current_execution_thread = threading.Timer(self.__decision_delay,
-                                                              lambda: self.__decision_callback(self.updated_game_state))
-            self.__current_execution_thread.start()
-        elif not self.__has_mulled_keep:
-            self.__current_execution_thread = threading.Timer(self.__intro_delay,
-                                                              lambda: self.__mulligan_decision_callback([]))
-            self.__current_execution_thread.start()
-            self.__has_mulled_keep = True
+        if self.updated_game_state.is_complete():
+            self.__update_inst_id__grp_id_dict(self.updated_game_state.get_game_objects())
+            if turn_info_dict['decisionPlayer'] == 1 and self.__has_mulled_keep:
+                self.__current_execution_thread = threading.Timer(self.__decision_delay,
+                                                                  lambda:
+                                                                  self.__decision_callback(self.updated_game_state))
+                self.__current_execution_thread.start()
+            elif not self.__has_mulled_keep:
+                self.__current_execution_thread = threading.Timer(self.__intro_delay,
+                                                                  lambda:
+                                                                  self.__mulligan_decision_callback([]))
+                self.__current_execution_thread.start()
+                self.__has_mulled_keep = True
 
     @staticmethod
     def __get_game_state_from_raw_dict(raw_dict: [str, str or int]):

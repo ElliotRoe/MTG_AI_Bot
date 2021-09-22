@@ -1,6 +1,6 @@
-from ControllerInterface import ControllerSecondary
-from AIInterface import AIKernel
-from GameState import GameState
+from Controller.ControllerInterface import ControllerSecondary
+from AI.AIInterface import AIKernel
+from Controller.Utilities.GameState import GameState
 
 
 class Game:
